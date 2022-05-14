@@ -4,12 +4,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 /** A DTO representing a movie, with only the public attributes. */
-@Getter
-@Setter
 public class MovieDTO {
 
   private Long id;
@@ -30,4 +26,60 @@ public class MovieDTO {
 
   private boolean watched;
   private boolean favourite;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public short getYear() {
+    return year;
+  }
+
+  public void setYear(short year) {
+    this.year = year;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getPoster() {
+    return poster;
+  }
+
+  public void setPoster(String poster) {
+    this.poster = poster;
+  }
+
+  public boolean isWatched() {
+    return watched;
+  }
+
+  public void setWatched(boolean watched) {
+    this.watched = watched;
+  }
+
+  public boolean isFavourite() {
+    return favourite;
+  }
+
+  public void setFavourite(boolean favourite) {
+    this.favourite = favourite;
+  }
 }

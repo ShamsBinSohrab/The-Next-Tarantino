@@ -12,14 +12,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "movies")
-public class Movie extends AbstractAuditingEntity implements Serializable {
+public class Movie implements Serializable {
 
   @Serial private static final long serialVersionUID = 1L;
 
@@ -54,4 +50,68 @@ public class Movie extends AbstractAuditingEntity implements Serializable {
 
   @Column(name = "favourite", nullable = false)
   private boolean favourite;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public short getYear() {
+    return year;
+  }
+
+  public void setYear(short year) {
+    this.year = year;
+  }
+
+  public String getImdbId() {
+    return imdbId;
+  }
+
+  public void setImdbId(String imdbId) {
+    this.imdbId = imdbId;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getPoster() {
+    return poster;
+  }
+
+  public void setPoster(String poster) {
+    this.poster = poster;
+  }
+
+  public boolean isWatched() {
+    return watched;
+  }
+
+  public void setWatched(boolean watched) {
+    this.watched = watched;
+  }
+
+  public boolean isFavourite() {
+    return favourite;
+  }
+
+  public void setFavourite(boolean favourite) {
+    this.favourite = favourite;
+  }
 }

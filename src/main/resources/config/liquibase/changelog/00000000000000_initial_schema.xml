@@ -123,6 +123,9 @@
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" primaryKeyName="pk_movies"/>
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="title" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -140,11 +143,18 @@
             </column>
         </createTable>
 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+            baseTableName="movies"
+            constraintName="fk_user_id"
+            referencedColumnNames="id"
+            referencedTableName="jhi_user"/>
+
         <loadData
             file="config/liquibase/data/movies.csv"
             separator=";"
             tableName="movies"
             usePreparedStatements="true">
+            <column name="user_id" type="numeric"/>
         </loadData>
     </changeSet>
 </databaseChangeLog>
