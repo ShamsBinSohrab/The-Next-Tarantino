@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -23,7 +22,9 @@ public class Movie implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
+  @Column(name = "user_id", nullable = false)
+  private long userId;
+
   @Size(max = 255)
   @Column(name = "title", nullable = false)
   private String title;
@@ -113,5 +114,13 @@ public class Movie implements Serializable {
 
   public void setFavourite(boolean favourite) {
     this.favourite = favourite;
+  }
+
+  public long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(long userId) {
+    this.userId = userId;
   }
 }

@@ -17,7 +17,8 @@ public class MovieService {
     this.movieRepository = movieRepository;
   }
 
-  public List<Movie> getAll(boolean watched, boolean favourite) {
-    return movieRepository.findAllByWatchedEqualsAndFavouriteEquals(watched, favourite);
+  public List<Movie> getAllForUser(long userId, boolean watched, boolean favourite) {
+    return movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
+        userId, watched, favourite);
   }
 }
