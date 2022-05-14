@@ -34,14 +34,7 @@ public class MovieResource {
     var movies =
         isBlank(title)
             ? movieService.getAllMoviesForUser(userId, watched, favourite)
-            : movieService.getAllWatchedMoviesForUserByTitle(userId, title);
+            : movieService.getAllMoviesForUserByTitle(userId, title);
     return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
-  }
-
-  @GetMapping("/online")
-  List<MovieDTO> movies(@RequestParam String title) {
-    return movieService.getMoviesOnline(title).stream()
-        .map(m -> modelMapper.map(m, MovieDTO.class))
-        .toList();
   }
 }

@@ -129,7 +129,7 @@
             <column name="title" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="year" type="smallint">
+            <column name="year" type="varchar(4)">
                 <constraints nullable="false"/>
             </column>
             <column name="imdb_id" type="varchar(50)"/>

@@ -8,9 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name = "movies")
@@ -29,10 +29,8 @@ public class Movie implements Serializable {
   @Column(name = "title", nullable = false)
   private String title;
 
-  @Min(1800)
-  @Max(3000)
-  @Column(name = "year", nullable = false)
-  private short year;
+  @Column(name = "year", nullable = false, length = 4)
+  private String year;
 
   @Size(max = 50)
   @Column(name = "imdb_id", length = 50)
@@ -68,11 +66,11 @@ public class Movie implements Serializable {
     this.title = title;
   }
 
-  public short getYear() {
+  public String getYear() {
     return year;
   }
 
-  public void setYear(short year) {
+  public void setYear(String year) {
     this.year = year;
   }
 
@@ -122,5 +120,29 @@ public class Movie implements Serializable {
 
   public void setUserId(long userId) {
     this.userId = userId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Movie movie = (Movie) o;
+
+    return new EqualsBuilder()
+        .append(year, movie.year)
+        .append(title, movie.title)
+        .append(imdbId, movie.imdbId)
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(title).append(year).append(imdbId).toHashCode();
   }
 }

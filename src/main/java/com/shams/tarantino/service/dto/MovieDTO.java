@@ -1,7 +1,5 @@
 package com.shams.tarantino.service.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,9 +12,8 @@ public class MovieDTO {
   @Size(max = 255)
   private String title;
 
-  @Min(1800)
-  @Max(3000)
-  private short year;
+  @Size(max = 4)
+  private String year;
 
   @Size(max = 50)
   private String type;
@@ -43,11 +40,11 @@ public class MovieDTO {
     this.title = title;
   }
 
-  public short getYear() {
+  public String getYear() {
     return year;
   }
 
-  public void setYear(short year) {
+  public void setYear(String year) {
     this.year = year;
   }
 

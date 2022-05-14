@@ -5,8 +5,16 @@ import com.shams.tarantino.config.Constants;
 import com.shams.tarantino.domain.Movie;
 import com.shams.tarantino.repository.MovieRepository;
 import com.shams.tarantino.service.models.RapidMovieResponse;
+import com.shams.tarantino.service.models.RapidMovieResponse.MovieResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,14 +49,30 @@ public class MovieService {
     this.objectMapper = objectMapper;
   }
 
-  public List<Movie> getAllMoviesForUser(long userId, boolean watched, boolean favourite) {
+  public Set<Movie> getAllMoviesForUser(long userId, boolean watched, boolean favourite) {
     return movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
         userId, watched, favourite);
   }
 
-  public List<Movie> getAllWatchedMoviesForUserByTitle(long userId, String title) {
-    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContainingIgnoreCase(
-        userId, title);
+  public Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
+    var future = CompletableFuture.supplyAsync(() -> title);
+    var result =
+        Stream.of(
+                future.thenApply(
+                    t ->
+                        movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(
+                            userId, t)),
+                future
+                    .thenApply(this::getMoviesOnline)
+                    .completeOnTimeout(List.of(), 5, TimeUnit.SECONDS))
+            .map(CompletableFuture::join)
+            .flatMap(Collection::stream)
+            .collect(
+                Collectors.toMap(
+                    Function.identity(),
+                    Movie::getTitle,
+                    (movieFromDb, movieFromApi) -> movieFromDb));
+    return result.keySet();
   }
 
   public List<Movie> getMoviesOnline(String title) {
@@ -67,8 +91,8 @@ public class MovieService {
     var call = httpClient.newCall(request);
     try (var response = call.execute()) {
       var body = response.body();
-      var resp = objectMapper.readValue(body.string(), RapidMovieResponse.class);
-      return List.of();
+      var rapidMovieResponse = objectMapper.readValue(body.string(), RapidMovieResponse.class);
+      return rapidMovieResponse.search().stream().map(MovieResponse::toMovie).toList();
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
