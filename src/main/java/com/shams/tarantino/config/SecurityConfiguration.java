@@ -1,13 +1,13 @@
 package com.shams.tarantino.config;
 
-import com.shams.tarantino.security.*;
-import com.shams.tarantino.security.jwt.*;
+import com.shams.tarantino.security.AuthoritiesConstants;
+import com.shams.tarantino.security.jwt.JWTConfigurer;
+import com.shams.tarantino.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,89 +25,100 @@ import tech.jhipster.config.JHipsterProperties;
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration {
 
-    private final JHipsterProperties jHipsterProperties;
+  private final JHipsterProperties jHipsterProperties;
 
-    private final TokenProvider tokenProvider;
+  private final TokenProvider tokenProvider;
 
-    private final CorsFilter corsFilter;
-    private final SecurityProblemSupport problemSupport;
+  private final CorsFilter corsFilter;
+  private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(
-        TokenProvider tokenProvider,
-        CorsFilter corsFilter,
-        JHipsterProperties jHipsterProperties,
-        SecurityProblemSupport problemSupport
-    ) {
-        this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
-        this.problemSupport = problemSupport;
-        this.jHipsterProperties = jHipsterProperties;
-    }
+  public SecurityConfiguration(
+      TokenProvider tokenProvider,
+      CorsFilter corsFilter,
+      JHipsterProperties jHipsterProperties,
+      SecurityProblemSupport problemSupport) {
+    this.tokenProvider = tokenProvider;
+    this.corsFilter = corsFilter;
+    this.problemSupport = problemSupport;
+    this.jHipsterProperties = jHipsterProperties;
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web ->
-            web
-                .ignoring()
-                .antMatchers(HttpMethod.OPTIONS, "/**")
-                .antMatchers("/app/**/*.{js,html}")
-                .antMatchers("/i18n/**")
-                .antMatchers("/content/**")
-                .antMatchers("/swagger-ui/**")
-                .antMatchers("/test/**");
-    }
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return web ->
+        web.ignoring()
+            .antMatchers(HttpMethod.OPTIONS, "/**")
+            .antMatchers("/app/**/*.{js,html}")
+            .antMatchers("/i18n/**")
+            .antMatchers("/content/**")
+            .antMatchers("/swagger-ui/**")
+            .antMatchers("/test/**");
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http
-            .csrf()
-            .disable()
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // @formatter:off
+    http.csrf()
+        .disable()
+        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling()
+        .authenticationEntryPoint(problemSupport)
+        .accessDeniedHandler(problemSupport)
         .and()
-            .headers()
-            .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
+        .headers()
+        .contentSecurityPolicy(jHipsterProperties.getSecurity().getContentSecurityPolicy())
         .and()
-            .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
-            .permissionsPolicy().policy("camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
+        .permissionsPolicy()
+        .policy(
+            "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), sync-xhr=()")
         .and()
-            .frameOptions()
-            .deny()
+        .frameOptions()
+        .deny()
         .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-            .authorizeRequests()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/health/**").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+        .authorizeRequests()
+        .antMatchers("/api/authenticate")
+        .permitAll()
+        .antMatchers("/api/register")
+        .permitAll()
+        .antMatchers("/api/activate")
+        .permitAll()
+        .antMatchers("/api/account/reset-password/init")
+        .permitAll()
+        .antMatchers("/api/account/reset-password/finish")
+        .permitAll()
+        .antMatchers("/api/admin/**")
+        .hasAuthority(AuthoritiesConstants.ADMIN)
+        .antMatchers("/api/**")
+        .authenticated()
+        .antMatchers("/management/health")
+        .permitAll()
+        .antMatchers("/management/health/**")
+        .permitAll()
+        .antMatchers("/management/info")
+        .permitAll()
+        .antMatchers("/management/prometheus")
+        .permitAll()
+        .antMatchers("/management/**")
+        .hasAuthority(AuthoritiesConstants.ADMIN)
         .and()
-            .httpBasic()
+        .httpBasic()
         .and()
-            .apply(securityConfigurerAdapter());
-        return http.build();
-        // @formatter:on
-    }
+        .apply(securityConfigurerAdapter());
+    return http.build();
+    // @formatter:on
+  }
 
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider);
-    }
+  private JWTConfigurer securityConfigurerAdapter() {
+    return new JWTConfigurer(tokenProvider);
+  }
 }

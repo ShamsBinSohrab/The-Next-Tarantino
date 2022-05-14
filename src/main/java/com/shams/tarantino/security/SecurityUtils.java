@@ -26,6 +26,20 @@ public final class SecurityUtils {
         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
     }
 
+    public static Optional<Long> getCurrentUserId() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(extractId(securityContext.getAuthentication()));
+    }
+
+    private static Long extractId(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        } else if (authentication.getPrincipal() instanceof UserDetailsImpl userDetails) {
+            return userDetails.getId();
+        }
+        return null;
+    }
+
     private static String extractPrincipal(Authentication authentication) {
         if (authentication == null) {
             return null;
