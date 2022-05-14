@@ -23,6 +23,7 @@ public class MovieService {
   }
 
   public List<Movie> getAllWatchedMoviesForUserByTitle(long userId, String title) {
-    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleLike(userId, title);
+    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContainingIgnoreCase(
+        userId, title);
   }
 }
