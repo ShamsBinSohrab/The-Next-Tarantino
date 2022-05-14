@@ -37,24 +37,21 @@ public class Movie extends AbstractAuditingEntity implements Serializable {
   @Column(name = "year", nullable = false)
   private short year;
 
-  @NotNull
   @Size(max = 50)
-  @Column(name = "imdb_id", nullable = false, length = 50)
+  @Column(name = "imdb_id", length = 50)
   private String imdbId;
 
-  @NotNull
   @Size(max = 50)
-  @Column(name = "type", nullable = false, length = 50)
+  @Column(name = "type", length = 50)
   private String type;
 
-  @NotNull
   @Size(max = 255)
-  @Column(name = "poster", nullable = false)
+  @Column(name = "poster")
   private String poster;
 
   @Column(name = "watched", nullable = false)
-  private boolean watched;
+  private Boolean watched;
 
   @Column(name = "favourite", nullable = false)
-  private boolean favourite;
+  private Boolean favourite;
 }

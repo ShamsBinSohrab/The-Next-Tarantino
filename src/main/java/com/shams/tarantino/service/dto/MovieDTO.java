@@ -22,14 +22,12 @@ public class MovieDTO {
   @Max(3000)
   private short year;
 
-  @NotNull
   @Size(max = 50)
   private String type;
 
-  @NotNull
   @Size(max = 255)
   private String poster;
 
-  private boolean watched;
-  private boolean favourite;
+  private Boolean watched;
+  private Boolean favourite;
 }
