@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <changeSet id="00000000000000" author="jhipster">
         <createSequence sequenceName="sequence_generator" startValue="1050" incrementBy="50"/>
@@ -116,6 +114,21 @@
             <column name="local_time" type="time"/>
             <column name="offset_time" type="time"/>
             <column name="local_date" type="date"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="shams" id="00000000000003">
+        <createTable tableName="movies">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_movies"/>
+            </column>
+            <column name="title" type="varchar(1024)"/>
+            <column name="year" type="smallint"/>
+            <column name="imdb_id" type="varchar(50)"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="poster" type="varchar(255)"/>
+            <column name="watcher" type="boolean"/>
+            <column name="favourite" type="boolean"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
