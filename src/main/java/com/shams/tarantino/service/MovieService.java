@@ -8,10 +8,10 @@ import com.shams.tarantino.service.models.RapidMovieResponse;
 import com.shams.tarantino.service.models.RapidMovieResponse.MovieResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,16 +55,14 @@ public class MovieService {
   }
 
   public Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
-    var future = CompletableFuture.supplyAsync(() -> title);
+    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(userId, title);
+  }
+
+  public Set<Movie> searchMoviesForUser(long userId, String title) {
     var result =
         Stream.of(
-                future.thenApply(
-                    t ->
-                        movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(
-                            userId, t)),
-                future
-                    .thenApply(this::getMoviesOnline)
-                    .completeOnTimeout(List.of(), 5, TimeUnit.SECONDS))
+                CompletableFuture.supplyAsync(() -> getAllMoviesForUserByTitle(userId, title)),
+                CompletableFuture.supplyAsync(() -> getMoviesOnline(title)))
             .map(CompletableFuture::join)
             .flatMap(Collection::stream)
             .collect(
@@ -94,7 +92,7 @@ public class MovieService {
       var rapidMovieResponse = objectMapper.readValue(body.string(), RapidMovieResponse.class);
       return rapidMovieResponse.search().stream().map(MovieResponse::toMovie).toList();
     } catch (IOException ex) {
-      throw new RuntimeException(ex);
+      return Collections.emptyList();
     }
   }
 }
