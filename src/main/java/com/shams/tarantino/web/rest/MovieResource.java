@@ -1,5 +1,7 @@
 package com.shams.tarantino.web.rest;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 import com.shams.tarantino.service.MovieService;
 import com.shams.tarantino.service.dto.MovieDTO;
 import com.shams.tarantino.web.rest.util.UserId;
@@ -27,8 +29,12 @@ public class MovieResource {
   List<MovieDTO> movies(
       @RequestParam(required = false) boolean watched,
       @RequestParam(required = false) boolean favourite,
+      @RequestParam(required = false) String title,
       @UserId Long userId) {
-    var movies = movieService.getAllForUser(userId, watched, favourite);
+    var movies =
+        isBlank(title)
+            ? movieService.getAllMoviesForUser(userId, watched, favourite)
+            : movieService.getAllWatchedMoviesForUserByTitle(userId, title);
     return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
   }
 }

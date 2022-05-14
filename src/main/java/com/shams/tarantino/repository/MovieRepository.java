@@ -9,4 +9,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
   List<Movie> findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
       long userId, boolean watched, boolean favourite);
+
+  List<Movie> findAllByUserIdAndWatchedIsTrueAndTitleLike(long userId, String title);
 }
