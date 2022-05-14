@@ -9,12 +9,12 @@ import com.shams.tarantino.service.models.RapidMovieResponse.MovieResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,10 +54,6 @@ public class MovieService {
         userId, watched, favourite);
   }
 
-  public Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
-    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(userId, title);
-  }
-
   public Set<Movie> searchMoviesForUser(long userId, String title) {
     var result =
         Stream.of(
@@ -73,7 +69,11 @@ public class MovieService {
     return result.keySet();
   }
 
-  public List<Movie> getMoviesOnline(String title) {
+  private Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
+    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(userId, title);
+  }
+
+  private Set<Movie> getMoviesOnline(String title) {
     var httpUrl =
         MOVIE_API_URL
             .newBuilder()
@@ -90,9 +90,20 @@ public class MovieService {
     try (var response = call.execute()) {
       var body = response.body();
       var rapidMovieResponse = objectMapper.readValue(body.string(), RapidMovieResponse.class);
-      return rapidMovieResponse.search().stream().map(MovieResponse::toMovie).toList();
+      return rapidMovieResponse.search().stream()
+          .map(MovieResponse::toMovie)
+          .collect(Collectors.toSet());
     } catch (IOException ex) {
-      return Collections.emptyList();
+      return Collections.emptySet();
     }
+  }
+
+  @Transactional
+  public void save(Movie movie) {
+    movieRepository.save(movie);
+  }
+
+  public Movie getById(long id) {
+    return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
   }
 }

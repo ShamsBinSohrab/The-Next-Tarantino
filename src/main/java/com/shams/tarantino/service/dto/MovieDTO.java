@@ -15,6 +15,8 @@ public class MovieDTO {
   @Size(max = 4)
   private String year;
 
+  @NotNull private String imdbId;
+
   @Size(max = 50)
   private String type;
 
@@ -78,5 +80,13 @@ public class MovieDTO {
 
   public void setFavourite(boolean favourite) {
     this.favourite = favourite;
+  }
+
+  public String getImdbId() {
+    return imdbId;
+  }
+
+  public void setImdbId(String imdbId) {
+    this.imdbId = imdbId;
   }
 }
