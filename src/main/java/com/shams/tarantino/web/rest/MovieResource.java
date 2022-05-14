@@ -37,4 +37,11 @@ public class MovieResource {
             : movieService.getAllWatchedMoviesForUserByTitle(userId, title);
     return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
   }
+
+  @GetMapping("/online")
+  List<MovieDTO> movies(@RequestParam String title) {
+    return movieService.getMoviesOnline(title).stream()
+        .map(m -> modelMapper.map(m, MovieDTO.class))
+        .toList();
+  }
 }
