@@ -157,4 +157,24 @@
             <column name="user_id" type="numeric"/>
         </loadData>
     </changeSet>
+
+    <changeSet author="shams" id="00000000000004">
+        <createTable tableName="movie_reviews">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" primaryKeyName="pk_movie_reviews"/>
+            </column>
+            <column name="movie_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="movie_id"
+            baseTableName="movie_reviews"
+            constraintName="fk_movie_id"
+            referencedColumnNames="id"
+            referencedTableName="movies"/>
+    </changeSet>
 </databaseChangeLog>
