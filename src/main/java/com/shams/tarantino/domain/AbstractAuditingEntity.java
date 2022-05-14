@@ -1,6 +1,7 @@
 package com.shams.tarantino.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditingEntity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
     @CreatedBy
     @Column(name = "created_by", nullable = false, length = 50, updatable = false)

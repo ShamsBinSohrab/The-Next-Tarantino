@@ -1,5 +1,6 @@
 package com.shams.tarantino.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import javax.validation.constraints.Size;
 @Table(name = "jhi_authority")
 public class Authority implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
     @NotNull
     @Size(max = 50)
