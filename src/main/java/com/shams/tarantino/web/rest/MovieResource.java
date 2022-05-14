@@ -26,9 +26,10 @@ public class MovieResource {
 
   @GetMapping
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
-  List<MovieDTO> movies(
-      @RequestParam(required = false) Boolean watched,
-      @RequestParam(required = false) Boolean favourite) {
-    return movieService.getAll().stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
+  List<MovieDTO> watchedMovies(
+      @RequestParam(required = false) boolean watched,
+      @RequestParam(required = false) boolean favourite) {
+    var movies = movieService.getAll(watched, favourite);
+    return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
   }
 }
