@@ -50,8 +50,8 @@ public class Movie extends AbstractAuditingEntity implements Serializable {
   private String poster;
 
   @Column(name = "watched", nullable = false)
-  private Boolean watched;
+  private boolean watched;
 
   @Column(name = "favourite", nullable = false)
-  private Boolean favourite;
+  private boolean favourite;
 }

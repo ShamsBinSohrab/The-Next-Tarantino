@@ -28,6 +28,6 @@ public class MovieDTO {
   @Size(max = 255)
   private String poster;
 
-  private Boolean watched;
-  private Boolean favourite;
+  private boolean watched;
+  private boolean favourite;
 }

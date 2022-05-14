@@ -132,8 +132,12 @@
             <column name="imdb_id" type="varchar(50)"/>
             <column name="type" type="varchar(50)"/>
             <column name="poster" type="varchar(255)"/>
-            <column name="watched" type="boolean"/>
-            <column name="favourite" type="boolean"/>
+            <column name="watched" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="favourite" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <loadData
