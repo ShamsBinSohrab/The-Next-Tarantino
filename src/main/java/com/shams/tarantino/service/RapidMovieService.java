@@ -3,10 +3,12 @@ package com.shams.tarantino.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shams.tarantino.config.Constants;
 import com.shams.tarantino.domain.Movie;
+import com.shams.tarantino.service.models.RapidMovieDetailsResponse;
 import com.shams.tarantino.service.models.RapidMovieResponse;
 import com.shams.tarantino.service.models.RapidMovieResponse.MovieResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +18,11 @@ import org.testcontainers.shaded.okhttp3.OkHttpClient;
 import org.testcontainers.shaded.okhttp3.Request;
 
 @Service
-public class RapidMovieService {
+class RapidMovieService {
 
     private static final HttpUrl MOVIE_API_URL = HttpUrl.parse(Constants.MOVIE_API_URL);
     private static final String TITLE_SEARCH_QUERY_PARAM = "s";
+    private static final String MOVIE_ID_QUERY_PARAM = "i";
     private static final String RESPONSE_TYPE_QUERY_PARAM = "r";
     private static final String RAPID_API_HOST = "X-Rapidapi-Host";
     private static final String RAPID_API_KEY = "X-Rapidapi-Key";
@@ -38,18 +41,7 @@ public class RapidMovieService {
     }
 
     public Set<Movie> getMovies(String title) {
-        var httpUrl =
-            MOVIE_API_URL
-                .newBuilder()
-                .addQueryParameter(TITLE_SEARCH_QUERY_PARAM, title)
-                .addQueryParameter(RESPONSE_TYPE_QUERY_PARAM, Constants.JSON)
-                .build();
-        var request =
-            new Request.Builder()
-                .url(httpUrl)
-                .addHeader(RAPID_API_HOST, Constants.RAPID_API_HOST_VALUE)
-                .addHeader(RAPID_API_KEY, rapidApiKey)
-                .build();
+        var request = getRequest(searchMovieByTitleUrl(title));
         var call = httpClient.newCall(request);
         try (var response = call.execute()) {
             var body = response.body();
@@ -63,4 +55,41 @@ public class RapidMovieService {
         }
     }
 
+    public Optional<RapidMovieDetailsResponse> getMovieDetails(String imdbId) {
+        var request = getRequest(movieDetailsUrl(imdbId));
+        var call = httpClient.newCall(request);
+        try (var response = call.execute()) {
+            var body = response.body();
+            var details =
+                objectMapper.readValue(body.string(),
+                    RapidMovieDetailsResponse.class);
+            return Optional.of(details);
+        } catch (IOException ex) {
+            return Optional.empty();
+        }
+    }
+
+    private HttpUrl searchMovieByTitleUrl(String title) {
+        return MOVIE_API_URL
+            .newBuilder()
+            .addQueryParameter(TITLE_SEARCH_QUERY_PARAM, title)
+            .addQueryParameter(RESPONSE_TYPE_QUERY_PARAM, Constants.JSON)
+            .build();
+    }
+
+    private HttpUrl movieDetailsUrl(String imdbId) {
+        return MOVIE_API_URL
+            .newBuilder()
+            .addQueryParameter(MOVIE_ID_QUERY_PARAM, imdbId)
+            .addQueryParameter(RESPONSE_TYPE_QUERY_PARAM, Constants.JSON)
+            .build();
+    }
+
+    private Request getRequest(HttpUrl url) {
+        return new Request.Builder()
+            .url(url)
+            .addHeader(RAPID_API_HOST, Constants.RAPID_API_HOST_VALUE)
+            .addHeader(RAPID_API_KEY, rapidApiKey)
+            .build();
+    }
 }

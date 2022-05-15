@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import com.shams.tarantino.domain.Movie;
 import com.shams.tarantino.service.MovieService;
 import com.shams.tarantino.service.dto.MovieDTO;
+import com.shams.tarantino.service.dto.MovieDetailsDTO;
 import com.shams.tarantino.service.dto.MovieUpdateDTO;
 import com.shams.tarantino.web.rest.util.UserId;
 import java.util.List;
@@ -26,42 +27,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/movies")
 public class MovieResource {
 
-  private final ModelMapper modelMapper;
-  private final MovieService movieService;
+    private final ModelMapper modelMapper;
+    private final MovieService movieService;
 
-  public MovieResource(ModelMapper modelMapper, MovieService movieService) {
-    this.modelMapper = modelMapper;
-    this.movieService = movieService;
-  }
+    public MovieResource(ModelMapper modelMapper, MovieService movieService) {
+        this.modelMapper = modelMapper;
+        this.movieService = movieService;
+    }
 
-  @GetMapping
-  List<MovieDTO> movies(
-      @RequestParam(required = false) boolean watched,
-      @RequestParam(required = false) boolean favourite,
-      @RequestParam(required = false) String title,
-      @UserId Long userId) {
-    var movies =
-        isBlank(title)
-            ? movieService.getAllMoviesForUser(userId, watched, favourite)
-            : movieService.searchMoviesForUser(userId, title);
-    return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
-  }
+    @GetMapping
+    List<MovieDTO> movies(
+        @RequestParam(required = false) boolean watched,
+        @RequestParam(required = false) boolean favourite,
+        @RequestParam(required = false) String title,
+        @UserId Long userId) {
+        var movies =
+            isBlank(title)
+                ? movieService.getAllMoviesForUser(userId, watched, favourite)
+                : movieService.searchMoviesForUser(userId, title);
+        return movies.stream().map(m -> modelMapper.map(m, MovieDTO.class)).toList();
+    }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  MovieDTO store(@RequestBody @Valid MovieDTO movieDTO, @UserId Long userId) {
-    var movie = modelMapper.map(movieDTO, Movie.class);
-    movie.setUserId(userId);
-    movieService.save(movie);
-    return modelMapper.map(movie, MovieDTO.class);
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    MovieDTO store(@RequestBody @Valid MovieDTO movieDTO, @UserId Long userId) {
+        var movie = modelMapper.map(movieDTO, Movie.class);
+        movie.setUserId(userId);
+        movieService.save(movie);
+        return modelMapper.map(movie, MovieDTO.class);
+    }
 
-  @PatchMapping("/{id}")
-  MovieDTO update(@PathVariable long id, @RequestBody @Valid MovieUpdateDTO movieUpdateDTO) {
-    var movie = movieService.getById(id);
-    movie.setWatched(movieUpdateDTO.isWatched());
-    movie.setFavourite(movieUpdateDTO.isFavourite());
-    movieService.save(movie);
-    return modelMapper.map(movie, MovieDTO.class);
-  }
+    @PatchMapping("/{id}")
+    MovieDTO update(@PathVariable long id, @RequestBody @Valid MovieUpdateDTO movieUpdateDTO) {
+        var movie = movieService.getById(id);
+        movie.setWatched(movieUpdateDTO.isWatched());
+        movie.setFavourite(movieUpdateDTO.isFavourite());
+        movieService.save(movie);
+        return modelMapper.map(movie, MovieDTO.class);
+    }
+
+    @GetMapping("/{imdbId}")
+    MovieDetailsDTO details(@PathVariable String imdbId) {
+        return movieService.getDetails(imdbId);
+    }
 }

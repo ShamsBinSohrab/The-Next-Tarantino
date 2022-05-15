@@ -2,6 +2,8 @@ package com.shams.tarantino.service;
 
 import com.shams.tarantino.domain.Movie;
 import com.shams.tarantino.repository.MovieRepository;
+import com.shams.tarantino.service.dto.MovieDetailsDTO;
+import com.shams.tarantino.service.models.RapidMovieDetailsResponse;
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /** Service class for managing movies. */
@@ -57,5 +60,12 @@ public class MovieService {
 
     public Movie getById(long id) {
         return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Transactional(propagation = Propagation.NEVER)
+    public MovieDetailsDTO getDetails(String imdbId) {
+        return rapidMovieService.getMovieDetails(imdbId)
+            .map(RapidMovieDetailsResponse::toMovieDetailsDTO)
+            .orElseThrow(() -> new IllegalStateException("Unable to get details for: " + imdbId));
     }
 }
