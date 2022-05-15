@@ -11,6 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +60,9 @@ public class MovieService {
     }
 
     public Movie getById(long id) {
-        return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        var movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Hibernate.initialize(movie.getMovieReview());
+        return movie;
     }
 
     @Transactional(propagation = Propagation.NEVER)
