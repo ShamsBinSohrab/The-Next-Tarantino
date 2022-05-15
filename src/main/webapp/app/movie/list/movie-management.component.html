@@ -21,7 +21,7 @@
             <tbody>
             <tr *ngFor="let movie of watchedMovies">
                 <td>
-                    <a [routerLink]="['./', movie.title, 'view']">{{ movie.title }}</a>
+                    <a [routerLink]="['./', movie.imdbId, 'view']">{{ movie.title }}</a>
                 </td>
                 <td>{{ movie.year }}</td>
                 <td>
@@ -56,7 +56,7 @@
             <tbody>
             <tr *ngFor="let movie of favouriteMovies">
                 <td>
-                    <a [routerLink]="['./', movie.title, 'view']">{{ movie.title }}</a>
+                    <a [routerLink]="['./', movie.imdbId, 'view']">{{ movie.title }}</a>
                 </td>
                 <td>{{ movie.year }}</td>
                 <td>

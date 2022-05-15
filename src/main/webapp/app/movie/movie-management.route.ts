@@ -4,21 +4,33 @@ import {Observable, of} from 'rxjs';
 
 import {MovieManagementComponent} from "./list/movie-management.component";
 import {MovieService} from "./service/movie.service";
-import {IMovie} from "./movie-management.model";
+import {IMovieDetails, MovieDetails} from "./movie-management.model";
+import {MovieManagementDetailsComponent} from "./details/movie-management-details.component";
 
 @Injectable({providedIn: 'root'})
-export class MovieResolve implements Resolve<IMovie> {
-  constructor(private service: MovieService) {
-  }
+export class MovieDetailsResolve implements Resolve<IMovieDetails> {
+    constructor(private service: MovieService) {
+    }
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IMovie> {
-      return of();
-  }
+    resolve(route: ActivatedRouteSnapshot): Observable<IMovieDetails> {
+        const id = route.params['imdbId'];
+        if (id) {
+            return this.service.details(id);
+        }
+        return of(new MovieDetails());
+    }
 }
 
 export const movieRoute: Routes = [
-  {
-    path: '',
-    component: MovieManagementComponent,
-  },
+    {
+        path: '',
+        component: MovieManagementComponent,
+    },
+    {
+        path: ':imdbId/view',
+        component: MovieManagementDetailsComponent,
+        resolve: {
+            details: MovieDetailsResolve,
+        }
+    },
 ];

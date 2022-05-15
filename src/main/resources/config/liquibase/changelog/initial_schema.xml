@@ -155,6 +155,8 @@
             tableName="movies"
             usePreparedStatements="true">
             <column name="user_id" type="numeric"/>
+            <column name="watched" type="boolean"/>
+            <column name="favourite" type="boolean"/>
         </loadData>
     </changeSet>
 

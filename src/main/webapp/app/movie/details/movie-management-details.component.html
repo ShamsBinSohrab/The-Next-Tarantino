@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <div *ngIf="details">
+            <h2>
+                <strong>{{ details.title }}</strong>
+            </h2>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Plot</span></dt>
+                <dd>
+                    <span>{{ details.plot }}</span>
+                </dd>
+
+                <dt><span>Director</span></dt>
+                <dd>{{ details.director }}</dd>
+
+                <dt><span>Writer</span></dt>
+                <dd>{{ details.writer }}</dd>
+
+                <dt><span>Actors</span></dt>
+                <dd>{{ details.actors }}</dd>
+            </dl>
+
+            <button type="submit" routerLink="../../" class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span></button>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
-title;user_id;year;imdb_id;type;poster
-Avengers: Endgame;1;2019;tt4154796;movie;https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_SX300.jpg
-Avengers: Endgame and the Latest Captain Marvel Outrage!!;1;2019;tt10025738;movie;https://m.media-amazon.com/images/M/MV5BZjg2ZTM3OTgtY2ExMS00OGM4LTg3NDEtNjQ0MjJiZDFmMGFkXkEyXkFqcGdeQXVyMDY3OTcyOQ@@._V1_SX300.jpg
-Marvel Studios' Avengers: Endgame LIVE Red Carpet World Premiere;1;2019;tt10240638;movie;https://m.media-amazon.com/images/M/MV5BNThjZDgwZTYtMjdmYy00ZmUyLTk4NTUtMzdjZmExODQ3ZmY4XkEyXkFqcGdeQXVyMjkzMDgyNTg@._V1_SX300.jpg
-Avengers Endgame: the Butt Plan;1;2019;tt10399328;movie;https://m.media-amazon.com/images/M/MV5BNTQ1OWQzODktMTY3Zi00OTQxLWExOTYtZTNjZjY5ZTY4M2UyXkEyXkFqcGdeQXVyMTAzMzk0NjAy._V1_SX300.jpg
-Avengers: Endgame (2019);1;2019;tt16416424;movie;N/A
+title;user_id;year;imdb_id;type;poster;watched;favourite
+Avengers: Endgame;1;2019;tt4154796;movie;https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_SX300.jpg;false;true
+Avengers: Endgame and the Latest Captain Marvel Outrage!!;1;2019;tt10025738;movie;https://m.media-amazon.com/images/M/MV5BZjg2ZTM3OTgtY2ExMS00OGM4LTg3NDEtNjQ0MjJiZDFmMGFkXkEyXkFqcGdeQXVyMDY3OTcyOQ@@._V1_SX300.jpg;false;true
+Marvel Studios' Avengers: Endgame LIVE Red Carpet World Premiere;1;2019;tt10240638;movie;https://m.media-amazon.com/images/M/MV5BNThjZDgwZTYtMjdmYy00ZmUyLTk4NTUtMzdjZmExODQ3ZmY4XkEyXkFqcGdeQXVyMjkzMDgyNTg@._V1_SX300.jpg;false;true
+Avengers Endgame: the Butt Plan;1;2019;tt10399328;movie;https://m.media-amazon.com/images/M/MV5BNTQ1OWQzODktMTY3Zi00OTQxLWExOTYtZTNjZjY5ZTY4M2UyXkEyXkFqcGdeQXVyMTAzMzk0NjAy._V1_SX300.jpg;false;true
+Avengers: Endgame (2019);1;2019;tt16416424;movie;N/A;false;true

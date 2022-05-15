@@ -7,14 +7,43 @@ export interface IMovie {
     favourite: boolean;
 }
 
+export interface IMovieDetails {
+    title?: string;
+    year?: string;
+    imdbId?: string;
+    rated?: string;
+    genre?: string;
+    director?: string;
+    writer?: string;
+    actors?: string;
+    plot?: string;
+    poster?: string;
+}
+
 export class Movie implements IMovie {
-  constructor(
-      public id: number,
-      public title: string,
-      public imdbId: string,
-      public year: string,
-      public watched: boolean,
-      public favourite: boolean,
-  ) {
-  }
+    constructor(
+        public id: number,
+        public title: string,
+        public imdbId: string,
+        public year: string,
+        public watched: boolean,
+        public favourite: boolean,
+    ) {
+    }
+}
+
+export class MovieDetails implements IMovieDetails {
+    constructor(
+        public title?: string,
+        public year?: string,
+        public imdbId?: string,
+        public rated?: string,
+        public genre?: string,
+        public director?: string,
+        public writer?: string,
+        public actors?: string,
+        public plot?: string,
+        public poster?: string,
+    ) {
+    }
 }
