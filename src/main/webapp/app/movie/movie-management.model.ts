@@ -21,7 +21,8 @@ export interface IMovieDetails {
 }
 
 export interface IMovieReview {
-    id?: number;
+    id: number;
+    movieId: number;
     review?: string;
 }
 
@@ -55,7 +56,8 @@ export class MovieDetails implements IMovieDetails {
 
 export class MovieReview implements IMovieReview {
     constructor(
-        public id?: number,
+        public id: number,
+        public movieId: number,
         public review?: string,
     ) {
     }

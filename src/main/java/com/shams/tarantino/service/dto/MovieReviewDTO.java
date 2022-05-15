@@ -6,6 +6,8 @@ public class MovieReviewDTO {
 
   private String review;
 
+  private long movieId;
+
   public long getId() {
     return id;
   }
@@ -20,5 +22,13 @@ public class MovieReviewDTO {
 
   public void setReview(String review) {
     this.review = review;
+  }
+
+  public long getMovieId() {
+    return movieId;
+  }
+
+  public void setMovieId(long movieId) {
+    this.movieId = movieId;
   }
 }

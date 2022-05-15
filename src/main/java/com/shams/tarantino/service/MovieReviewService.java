@@ -16,6 +16,11 @@ public class MovieReviewService {
   }
 
   public MovieReview getByMovieId(long movieId) {
-    return movieReviewRepository.findByMovieId(movieId).orElseThrow();
+    return movieReviewRepository.findByMovieId(movieId).orElse(new MovieReview());
+  }
+
+  @Transactional
+  public MovieReview save(MovieReview review) {
+    return movieReviewRepository.save(review);
   }
 }

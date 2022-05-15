@@ -2,31 +2,37 @@ import {Component, OnInit} from '@angular/core';
 import {MovieReview} from "../movie-management.model";
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, Validators} from "@angular/forms";
+import {MovieService} from "../service/movie.service";
 
 @Component({
     selector: 'jhi-movie-management-review',
     templateUrl: './movie-management-review.component.html'
 })
 export class MovieManagementReviewComponent implements OnInit {
-    review!: MovieReview | null;
+    review!: MovieReview;
     reviewForm = this.fb.group({
         id: [],
+        movieId: [],
         review: ['', [Validators.maxLength(50)]],
     });
 
-    constructor(private route: ActivatedRoute, private fb: FormBuilder) {
+    constructor(private route: ActivatedRoute, private fb: FormBuilder, private movieService: MovieService) {
     }
 
     ngOnInit(): void {
         this.route.data.subscribe(({review}) => {
             this.review = review;
-            console.error(review);
             this.updateForm(review);
         });
     }
 
-    addReview(): void {
-        console.error("HERE")
+    submit(): void {
+        this.review.review = this.reviewForm.get(['review'])?.value;
+        if (this.review.id) {
+            this.movieService.updateReview(this.review.movieId, this.review).subscribe((review) => this.updateForm(review));
+        } else {
+            this.movieService.addReview(this.route.snapshot.params['id'], this.review).subscribe((review) => this.updateForm(review));
+        }
     }
 
     previousState(): void {
@@ -37,6 +43,7 @@ export class MovieManagementReviewComponent implements OnInit {
         this.reviewForm.patchValue({
             id: review.id,
             review: review.review,
+            movieId: review.movieId,
         });
     }
 }

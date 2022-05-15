@@ -26,7 +26,6 @@ export class MovieReviewResolve implements Resolve<IMovieReview> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<IMovieReview> {
         const id = route.params['id'];
-        console.error(id);
         return this.service.getReview(id);
     }
 }

@@ -1,16 +1,17 @@
 <div class="d-flex justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="addReview()"
+        <form name="editForm" role="form" novalidate (ngSubmit)="submit()"
               [formGroup]="reviewForm">
             <h2 id="myUserLabel">Review Movie</h2>
 
             <div *ngIf="review">
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="mb-3" [hidden]="true">
-                    <input type="text" class="form-control" name="id" formControlName="id"
-                           readonly/>
-                </div>
+                <input type="text" class="form-control" name="id" formControlName="id"
+                       readonly hidden/>
+
+                <input type="text" class="form-control" name="movieId" formControlName="movieId"
+                       readonly hidden/>
 
                 <div class="mb-3">
                     <label class="form-label">Review</label>
