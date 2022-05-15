@@ -30,7 +30,7 @@ import {UserRouteAccessService} from 'app/core/auth/user-route-access.service';
         },
         {
           path: '',
-          loadChildren: () => import(`./home/home.module`).then(m => m.HomeModule),
+          loadChildren: () => import(`./movie/movie-management.module`).then(m => m.MovieManagementModule),
         },
         navbarRoute,
         ...errorRoute,

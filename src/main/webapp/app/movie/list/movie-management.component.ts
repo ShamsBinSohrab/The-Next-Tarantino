@@ -1,24 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {combineLatest, Subject} from 'rxjs';
-
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/auth/account.model';
-import {Movie} from "../movie/movie-management.model";
+import {Component, OnInit} from '@angular/core';
+import {Account} from "../../core/auth/account.model";
+import {Movie} from "../movie-management.model";
+import {AccountService} from "../../core/auth/account.service";
+import {MovieService} from "../service/movie.service";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
-import {MovieService} from "../movie/service/movie.service";
+import {combineLatest} from "rxjs";
 
 @Component({
-  selector: 'jhi-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'jhi-movie-management',
+  templateUrl: './movie-management.component.html'
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class MovieManagementComponent implements OnInit {
   account!: Account | null;
   movies: Movie[] | null = null;
   isLoading = false;
-
-  private readonly destroy$ = new Subject<void>();
 
   constructor(
     private accountService: AccountService,
@@ -47,13 +43,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  login(): void {
-    this.router.navigate(['/login']);
+  trackIdentity(_index: number, item: Movie): number {
+    return item.id!;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  setWatched(movie: Movie, watched: boolean): void {
+    movie.watched = watched;
+    console.error(movie);
+  }
+
+  setFavourite(movie: Movie, favourite: boolean): void {
+    movie.favourite = favourite;
+    console.error(movie);
   }
 
   private handleNavigation(): void {
@@ -64,6 +65,5 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private onSuccess(movies: Movie[] | null): void {
     this.movies = movies;
-    console.error(movies);
   }
 }

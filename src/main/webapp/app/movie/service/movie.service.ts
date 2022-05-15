@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {ApplicationConfigService} from 'app/core/config/application-config.service';
-import {IMovie} from "../movie.model";
+import {IMovie} from "../movie-management.model";
 
 @Injectable({providedIn: 'root'})
 export class MovieService {
