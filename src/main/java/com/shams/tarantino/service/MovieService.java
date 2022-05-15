@@ -11,7 +11,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.persistence.EntityNotFoundException;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,54 +20,52 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MovieService {
 
-    private final MovieRepository movieRepository;
-    private final RapidMovieService rapidMovieService;
+  private final MovieRepository movieRepository;
+  private final RapidMovieService rapidMovieService;
 
-    public MovieService(
-        MovieRepository movieRepository, RapidMovieService rapidMovieService) {
-        this.movieRepository = movieRepository;
-        this.rapidMovieService = rapidMovieService;
-    }
+  public MovieService(MovieRepository movieRepository, RapidMovieService rapidMovieService) {
+    this.movieRepository = movieRepository;
+    this.rapidMovieService = rapidMovieService;
+  }
 
-    public Set<Movie> getAllMoviesForUser(long userId, boolean watched, boolean favourite) {
-        return movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
-            userId, watched, favourite);
-    }
+  public Set<Movie> getAllMoviesForUser(long userId, boolean watched, boolean favourite) {
+    return movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
+        userId, watched, favourite);
+  }
 
-    public Set<Movie> searchMoviesForUser(long userId, String title) {
-        var result =
-            Stream.of(
-                    CompletableFuture.supplyAsync(() -> getAllMoviesForUserByTitle(userId, title)),
-                    CompletableFuture.supplyAsync(() -> rapidMovieService.getMovies(title)))
-                .map(CompletableFuture::join)
-                .flatMap(Collection::stream)
-                .collect(
-                    Collectors.toMap(
-                        Function.identity(),
-                        Movie::getTitle,
-                        (movieFromDb, movieFromApi) -> movieFromDb));
-        return result.keySet();
-    }
+  public Set<Movie> searchMoviesForUser(long userId, String title) {
+    var result =
+        Stream.of(
+                CompletableFuture.supplyAsync(() -> getAllMoviesForUserByTitle(userId, title)),
+                CompletableFuture.supplyAsync(() -> rapidMovieService.getMovies(title)))
+            .map(CompletableFuture::join)
+            .flatMap(Collection::stream)
+            .collect(
+                Collectors.toMap(
+                    Function.identity(),
+                    Movie::getTitle,
+                    (movieFromDb, movieFromApi) -> movieFromDb));
+    return result.keySet();
+  }
 
-    private Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
-        return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(userId, title);
-    }
+  private Set<Movie> getAllMoviesForUserByTitle(long userId, String title) {
+    return movieRepository.findAllByUserIdAndWatchedIsTrueAndTitleContaining(userId, title);
+  }
 
-    @Transactional
-    public void save(Movie movie) {
-        movieRepository.save(movie);
-    }
+  @Transactional
+  public void save(Movie movie) {
+    movieRepository.save(movie);
+  }
 
-    public Movie getById(long id) {
-        var movie = movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        Hibernate.initialize(movie.getMovieReview());
-        return movie;
-    }
+  public Movie getById(long id) {
+    return movieRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+  }
 
-    @Transactional(propagation = Propagation.NEVER)
-    public MovieDetailsDTO getDetails(String imdbId) {
-        return rapidMovieService.getMovieDetails(imdbId)
-            .map(RapidMovieDetailsResponse::toMovieDetailsDTO)
-            .orElseThrow(() -> new IllegalStateException("Unable to get details for: " + imdbId));
-    }
+  @Transactional(propagation = Propagation.NEVER)
+  public MovieDetailsDTO getDetails(String imdbId) {
+    return rapidMovieService
+        .getMovieDetails(imdbId)
+        .map(RapidMovieDetailsResponse::toMovieDetailsDTO)
+        .orElseThrow(() -> new IllegalStateException("Unable to get details for: " + imdbId));
+  }
 }

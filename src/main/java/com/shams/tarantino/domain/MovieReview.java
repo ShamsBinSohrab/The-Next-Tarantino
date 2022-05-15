@@ -13,31 +13,41 @@ import javax.persistence.Table;
 @Table(name = "movie_reviews")
 public class MovieReview implements Serializable {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
+  @Serial private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "review", nullable = false, length = 1024)
-    private String review;
+  @Column(name = "review", nullable = false, length = 1024)
+  private String review;
 
-    public Long getId() {
-        return id;
-    }
+  @Column(name = "movie_id", nullable = false)
+  private Long movieId;
 
-    public MovieReview setId(Long id) {
-        this.id = id;
-        return this;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getReview() {
-        return review;
-    }
+  public MovieReview setId(Long id) {
+    this.id = id;
+    return this;
+  }
 
-    public MovieReview setReview(String review) {
-        this.review = review;
-        return this;
+  public String getReview() {
+    return review;
+  }
+
+  public MovieReview setReview(String review) {
+    this.review = review;
+    return this;
+  }
+
+  public Long getMovieId() {
+    return movieId;
+  }
+
+  public void setMovieId(Long movieId) {
+    this.movieId = movieId;
     }
 }
