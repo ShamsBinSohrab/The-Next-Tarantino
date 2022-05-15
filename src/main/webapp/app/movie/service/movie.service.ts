@@ -7,12 +7,30 @@ import {IMovie} from "../movie-management.model";
 
 @Injectable({providedIn: 'root'})
 export class MovieService {
-  private resourceUrl = this.applicationConfigService.getEndpointFor('api/movies');
+    private resourceUrl = this.applicationConfigService.getEndpointFor('api/movies');
 
-  constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {
-  }
+    constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {
+    }
 
-  list(): Observable<HttpResponse<IMovie[]>> {
-    return this.http.get<IMovie[]>(this.resourceUrl, {params: {}, observe: 'response'});
-  }
+    list(): Observable<HttpResponse<IMovie[]>> {
+        return this.http.get<IMovie[]>(this.resourceUrl, {params: {}, observe: 'response'});
+    }
+
+    listOfWatchedMovies(): Observable<HttpResponse<IMovie[]>> {
+        return this.http.get<IMovie[]>(this.resourceUrl, {
+            params: {watched: true},
+            observe: 'response'
+        });
+    }
+
+    listOfFavouriteMovies(): Observable<HttpResponse<IMovie[]>> {
+        return this.http.get<IMovie[]>(this.resourceUrl, {
+            params: {watched: false, favourite: true},
+            observe: 'response'
+        });
+    }
+
+    update(movie: IMovie): Observable<IMovie> {
+        return this.http.patch<IMovie>(`${this.resourceUrl}/${movie.id}`, movie);
+    }
 }

@@ -28,9 +28,11 @@ public class MovieService {
     this.rapidMovieService = rapidMovieService;
   }
 
-  public Set<Movie> getAllMoviesForUser(long userId, boolean watched, boolean favourite) {
-    return movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
-        userId, watched, favourite);
+  public Set<Movie> getAllMoviesForUser(long userId, Boolean watched, Boolean favourite) {
+    return favourite == null
+        ? movieRepository.findAllByUserIdAndWatchedEquals(userId, watched)
+        : movieRepository.findAllByUserIdAndWatchedEqualsAndFavouriteEquals(
+            userId, watched, favourite);
   }
 
   public Set<Movie> searchMoviesForUser(long userId, String title) {

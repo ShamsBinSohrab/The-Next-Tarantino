@@ -8,22 +8,24 @@ import {HttpResponse} from "@angular/common/http";
 import {combineLatest} from "rxjs";
 
 @Component({
-  selector: 'jhi-movie-management',
-  templateUrl: './movie-management.component.html'
+    selector: 'jhi-movie-management',
+    templateUrl: './movie-management.component.html'
 })
 export class MovieManagementComponent implements OnInit {
-  account!: Account | null;
-  movies: Movie[] | null = null;
-  isLoading = false;
+    account!: Account | null;
+    movies: Movie[] | null = null;
+    watchedMovies: Movie[] | null = null;
+    favouriteMovies: Movie[] | null = null;
+    isLoading = false;
 
-  constructor(
-    private accountService: AccountService,
-    private movieService: MovieService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) {
-  }
+    constructor(
+        private accountService: AccountService,
+        private movieService: MovieService,
+        private activatedRoute: ActivatedRoute,
+        private router: Router) {
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.accountService
       .identity()
       .subscribe(account => this.account = account);
@@ -31,30 +33,35 @@ export class MovieManagementComponent implements OnInit {
   }
 
   loadAll(): void {
-    this.isLoading = true;
-    this.movieService
-      .list()
+      this.isLoading = true;
+      this.movieService
+      .listOfWatchedMovies()
       .subscribe({
-        next: (res: HttpResponse<Movie[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body);
-        },
-        error: () => (this.isLoading = false),
+          next: (res: HttpResponse<Movie[]>) => {
+              this.isLoading = false;
+              this.watchedMovies = res.body;
+          },
+          error: () => (this.isLoading = false),
+      });
+      this.movieService
+      .listOfFavouriteMovies()
+      .subscribe({
+          next: (res: HttpResponse<Movie[]>) => {
+              this.isLoading = false;
+              this.favouriteMovies = res.body;
+          },
+          error: () => (this.isLoading = false),
       });
   }
 
-  trackIdentity(_index: number, item: Movie): number {
-    return item.id!;
-  }
-
   setWatched(movie: Movie, watched: boolean): void {
-    movie.watched = watched;
-    console.error(movie);
+      movie.watched = watched;
+      this.movieService.update(movie).subscribe(() => this.loadAll());
   }
 
   setFavourite(movie: Movie, favourite: boolean): void {
-    movie.favourite = favourite;
-    console.error(movie);
+      movie.favourite = favourite;
+      this.movieService.update(movie).subscribe(() => this.loadAll());
   }
 
   private handleNavigation(): void {

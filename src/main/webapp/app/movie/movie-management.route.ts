@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 
 import {MovieManagementComponent} from "./list/movie-management.component";
 import {MovieService} from "./service/movie.service";
-import {IMovie, Movie} from "./movie-management.model";
+import {IMovie} from "./movie-management.model";
 
 @Injectable({providedIn: 'root'})
 export class MovieResolve implements Resolve<IMovie> {
@@ -12,7 +12,7 @@ export class MovieResolve implements Resolve<IMovie> {
   }
 
   resolve(route: ActivatedRouteSnapshot): Observable<IMovie> {
-    return of(new Movie());
+      return of();
   }
 }
 

@@ -35,12 +35,12 @@ public class MovieResource {
         this.movieService = movieService;
     }
 
-    @GetMapping
-    List<MovieDTO> movies(
-        @RequestParam(required = false) boolean watched,
-        @RequestParam(required = false) boolean favourite,
-        @RequestParam(required = false) String title,
-        @UserId Long userId) {
+  @GetMapping
+  List<MovieDTO> movies(
+      @RequestParam(required = false) Boolean watched,
+      @RequestParam(required = false) Boolean favourite,
+      @RequestParam(required = false) String title,
+      @UserId Long userId) {
         var movies =
             isBlank(title)
                 ? movieService.getAllMoviesForUser(userId, watched, favourite)
