@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="addReview()"
+              [formGroup]="reviewForm">
+            <h2 id="myUserLabel">Review Movie</h2>
+
+            <div *ngIf="review">
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="mb-3" [hidden]="true">
+                    <input type="text" class="form-control" name="id" formControlName="id"
+                           readonly/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Review</label>
+                    <textarea type="text" class="form-control" name="review"
+                              formControlName="review"></textarea>
+
+                    <div
+                        *ngIf="reviewForm.get('review')!.invalid && (reviewForm.get('review')!.dirty || reviewForm.get('review')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="reviewForm.get('review')?.errors?.maxlength">
+                            Maxlength. </small>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" [disabled]="reviewForm.invalid" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

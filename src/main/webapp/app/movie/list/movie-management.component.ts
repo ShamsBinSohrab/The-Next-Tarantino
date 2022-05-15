@@ -3,7 +3,7 @@ import {Account} from "../../core/auth/account.model";
 import {Movie} from "../movie-management.model";
 import {AccountService} from "../../core/auth/account.service";
 import {MovieService} from "../service/movie.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
 import {combineLatest} from "rxjs";
 
@@ -21,56 +21,55 @@ export class MovieManagementComponent implements OnInit {
     constructor(
         private accountService: AccountService,
         private movieService: MovieService,
-        private activatedRoute: ActivatedRoute,
-        private router: Router) {
+        private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(): void {
-    this.accountService
-      .identity()
-      .subscribe(account => this.account = account);
-    this.handleNavigation()
-  }
+        this.accountService
+        .identity()
+        .subscribe(account => this.account = account);
+        this.handleNavigation()
+    }
 
-  loadAll(): void {
-      this.isLoading = true;
-      this.movieService
-      .listOfWatchedMovies()
-      .subscribe({
-          next: (res: HttpResponse<Movie[]>) => {
-              this.isLoading = false;
-              this.watchedMovies = res.body;
-          },
-          error: () => (this.isLoading = false),
-      });
-      this.movieService
-      .listOfFavouriteMovies()
-      .subscribe({
-          next: (res: HttpResponse<Movie[]>) => {
-              this.isLoading = false;
-              this.favouriteMovies = res.body;
-          },
-          error: () => (this.isLoading = false),
-      });
-  }
+    loadAll(): void {
+        this.isLoading = true;
+        this.movieService
+        .listOfWatchedMovies()
+        .subscribe({
+            next: (res: HttpResponse<Movie[]>) => {
+                this.isLoading = false;
+                this.watchedMovies = res.body;
+            },
+            error: () => (this.isLoading = false),
+        });
+        this.movieService
+        .listOfFavouriteMovies()
+        .subscribe({
+            next: (res: HttpResponse<Movie[]>) => {
+                this.isLoading = false;
+                this.favouriteMovies = res.body;
+            },
+            error: () => (this.isLoading = false),
+        });
+    }
 
-  setWatched(movie: Movie, watched: boolean): void {
-      movie.watched = watched;
-      this.movieService.update(movie).subscribe(() => this.loadAll());
-  }
+    setWatched(movie: Movie, watched: boolean): void {
+        movie.watched = watched;
+        this.movieService.update(movie).subscribe(() => this.loadAll());
+    }
 
-  setFavourite(movie: Movie, favourite: boolean): void {
-      movie.favourite = favourite;
-      this.movieService.update(movie).subscribe(() => this.loadAll());
-  }
+    setFavourite(movie: Movie, favourite: boolean): void {
+        movie.favourite = favourite;
+        this.movieService.update(movie).subscribe(() => this.loadAll());
+    }
 
-  private handleNavigation(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      this.loadAll();
-    });
-  }
+    private handleNavigation(): void {
+        combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+            this.loadAll();
+        });
+    }
 
-  private onSuccess(movies: Movie[] | null): void {
-    this.movies = movies;
-  }
+    private onSuccess(movies: Movie[] | null): void {
+        this.movies = movies;
+    }
 }

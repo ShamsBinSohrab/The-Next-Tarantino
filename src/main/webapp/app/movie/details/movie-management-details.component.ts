@@ -15,7 +15,6 @@ export class MovieManagementDetailsComponent implements OnInit {
     ngOnInit(): void {
         this.route.data.subscribe(({details}) => {
             this.details = details;
-            console.error("HERE")
         });
     }
 

@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {ApplicationConfigService} from 'app/core/config/application-config.service';
-import {IMovie, IMovieDetails} from "../movie-management.model";
+import {IMovie, IMovieDetails, IMovieReview} from "../movie-management.model";
 
 @Injectable({providedIn: 'root'})
 export class MovieService {
@@ -36,5 +36,9 @@ export class MovieService {
 
     details(imdbId: string): Observable<IMovieDetails> {
         return this.http.get<IMovieDetails>(`${this.resourceUrl}/${imdbId}`);
+    }
+
+    getReview(id: number): Observable<IMovieReview> {
+        return this.http.get<IMovieReview>(`${this.resourceUrl}/${id}/review`);
     }
 }

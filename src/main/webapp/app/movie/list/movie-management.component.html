@@ -34,6 +34,9 @@
                             (click)="setFavourite(movie, !movie.favourite)">{{ movie.favourite
                         ? "Not Favourite" : "Favourite"}}</button>
                 </td>
+                <td>
+                    <a [routerLink]="['./', movie.id, 'review']">Review</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -51,6 +54,7 @@
                 <th scope="col"><span>Year</span></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -66,10 +70,11 @@
                 </td>
                 <td>
                     <button class="btn btn-warning btn-sm"
-                  (click)="setFavourite(movie, !movie.favourite)">{{ movie.favourite ? "Not Favourite" : "Favourite"}}</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+                            (click)="setFavourite(movie, !movie.favourite)">{{ movie.favourite
+                        ? "Not Favourite" : "Favourite"}}</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

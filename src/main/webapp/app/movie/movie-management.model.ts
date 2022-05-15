@@ -20,6 +20,11 @@ export interface IMovieDetails {
     poster?: string;
 }
 
+export interface IMovieReview {
+    id?: number;
+    review?: string;
+}
+
 export class Movie implements IMovie {
     constructor(
         public id: number,
@@ -44,6 +49,14 @@ export class MovieDetails implements IMovieDetails {
         public actors?: string,
         public plot?: string,
         public poster?: string,
+    ) {
+    }
+}
+
+export class MovieReview implements IMovieReview {
+    constructor(
+        public id?: number,
+        public review?: string,
     ) {
     }
 }

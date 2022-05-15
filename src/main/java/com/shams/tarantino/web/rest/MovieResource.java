@@ -3,9 +3,11 @@ package com.shams.tarantino.web.rest;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import com.shams.tarantino.domain.Movie;
+import com.shams.tarantino.service.MovieReviewService;
 import com.shams.tarantino.service.MovieService;
 import com.shams.tarantino.service.dto.MovieDTO;
 import com.shams.tarantino.service.dto.MovieDetailsDTO;
+import com.shams.tarantino.service.dto.MovieReviewDTO;
 import com.shams.tarantino.service.dto.MovieUpdateDTO;
 import com.shams.tarantino.web.rest.util.UserId;
 import java.util.List;
@@ -29,10 +31,13 @@ public class MovieResource {
 
     private final ModelMapper modelMapper;
     private final MovieService movieService;
+  private final MovieReviewService movieReviewService;
 
-    public MovieResource(ModelMapper modelMapper, MovieService movieService) {
+  public MovieResource(
+      ModelMapper modelMapper, MovieService movieService, MovieReviewService movieReviewService) {
         this.modelMapper = modelMapper;
         this.movieService = movieService;
+    this.movieReviewService = movieReviewService;
     }
 
   @GetMapping
@@ -70,4 +75,10 @@ public class MovieResource {
     MovieDetailsDTO details(@PathVariable String imdbId) {
         return movieService.getDetails(imdbId);
     }
+
+  @GetMapping("/{movieId}/review")
+  MovieReviewDTO getReview(@PathVariable long movieId) {
+    var review = movieReviewService.getByMovieId(movieId);
+    return modelMapper.map(review, MovieReviewDTO.class);
+  }
 }
