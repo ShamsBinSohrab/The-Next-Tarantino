@@ -5,8 +5,7 @@ services:
     image: the_next_tarantino
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
-      - SPRING_PROFILES_ACTIVE=prod,api-docs
-      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_PROFILES_ACTIVE=dev,api-docs
       - SPRING_DATASOURCE_URL=jdbc:postgresql://the_next_tarantino-postgresql:5432/The_Next_Tarantino
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://the_next_tarantino-postgresql:5432/The_Next_Tarantino
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
