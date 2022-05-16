@@ -1,19 +1,21 @@
 <div class="row">
-    <div class="col-md-12">
-        <div *ngIf="account">
-            <h1 class="display-4">Welcome to The Next Tarantino {{ account.firstName }}!</h1>
-        </div>
+  <div class="col-md-12">
+    <div *ngIf="account">
+      <h1 class="display-4">Welcome to The Next Tarantino {{ account.firstName }}!</h1>
     </div>
+  </div>
 
-    <div class="table-responsive" *ngIf="watchedMovies">
-        <div>
-            <h3 class="display-8">Your watched movies</h3>
-        </div>
-        <table class="table table-striped" aria-describedby="user-management-page-heading">
-            <thead>
-            <tr>
-                <th scope="col"><span>Title</span></th>
-                <th scope="col"><span>Year</span></th>
+  <jhi-alert></jhi-alert>
+
+  <div class="table-responsive" *ngIf="watchedMovies">
+    <div>
+      <h3 class="display-8">Your watched movies</h3>
+    </div>
+    <table class="table table-striped" aria-describedby="user-management-page-heading">
+      <thead>
+      <tr>
+        <th scope="col"><span>Title</span></th>
+        <th scope="col"><span>Year</span></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>

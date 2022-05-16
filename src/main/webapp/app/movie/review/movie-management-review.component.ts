@@ -33,6 +33,7 @@ export class MovieManagementReviewComponent implements OnInit {
         } else {
             this.movieService.addReview(this.route.snapshot.params['id'], this.review).subscribe((review) => this.updateForm(review));
         }
+        this.previousState();
     }
 
     previousState(): void {
