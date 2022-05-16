@@ -1,6 +1,19 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 version: '3.8'
 services:
+  the_next_tarantino-postgresql:
+    image: postgres:14.2
+    volumes:
+      - ~/volumes/jhipster/The_Next_Tarantino/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=The_Next_Tarantino
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:5432:5432
   the_next_tarantino-app:
     image: the_next_tarantino
     environment:
@@ -13,15 +26,3 @@ services:
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:8080:8080
-  the_next_tarantino-postgresql:
-    image: postgres:14.2
-    # volumes:
-    #   - ~/volumes/jhipster/The_Next_Tarantino/postgresql/:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    # If you want to expose these ports outside your dev PC,
-    # remove the "127.0.0.1:" prefix
-    ports:
-      - 127.0.0.1:5432:5432
