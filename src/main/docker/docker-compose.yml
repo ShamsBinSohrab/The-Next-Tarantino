@@ -19,8 +19,8 @@ services:
     # volumes:
     #   - ~/volumes/jhipster/The_Next_Tarantino/postgresql/:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=The_Next_Tarantino
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
