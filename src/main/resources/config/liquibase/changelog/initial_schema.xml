@@ -171,9 +171,6 @@
             <column name="review" type="varchar(1024)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="movie_id"
