@@ -34,7 +34,7 @@ public class TokenProvider {
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
-    private static final String USER_ID_KEY = "auth";
+    private static final String USER_ID_KEY = "user";
 
     private static final String INVALID_JWT_TOKEN = "Invalid JWT token.";
 
