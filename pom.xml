@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -78,10 +78,8 @@
         <modernizer-maven-plugin.version>2.4.0</modernizer-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.2.1</jib-maven-plugin.version>
-        <jib-maven-plugin.image>
-            eclipse-temurin:17.0.3_7-jre-focal@sha256:ff4393fa064756a5cdba1b287ab26efe2b51ea738e43de767b5b4e093100d27a
-        </jib-maven-plugin.image>
-        <jib-maven-plugin.architecture>arm64</jib-maven-plugin.architecture>
+        <jib-maven-plugin.image>ibm-semeru-runtimes:open-17.0.3_7-jre-focal</jib-maven-plugin.image>
+        <jib-maven-plugin.architecture>amd64</jib-maven-plugin.architecture>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.1.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
@@ -536,7 +534,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                      <javaVersion>${java.version}</javaVersion>
+                        <javaVersion>${java.version}</javaVersion>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -650,7 +648,7 @@
                             <id>enforce-dependencyConvergence</id>
                             <configuration>
                                 <rules>
-                                    <DependencyConvergence />
+                                    <DependencyConvergence/>
                                 </rules>
                                 <fail>false</fail>
                             </configuration>
@@ -662,12 +660,18 @@
                     <configuration>
                         <rules>
                             <requireMavenVersion>
-                                <message>You are running an older version of Maven. JHipster requires at least Maven ${maven.version}</message>
+                                <message>You are running an older version of Maven. JHipster
+                                    requires at least Maven ${maven.version}
+                                </message>
                                 <version>[${maven.version},)</version>
                             </requireMavenVersion>
                             <requireJavaVersion>
-                                <message>You are running an incompatible version of Java. JHipster supports JDK 11 to 18.</message>
-                                <version>[11,12),[12,13),[13,14),[14,15),[15,16),[16,17),[17,18),[18,19)</version>
+                                <message>You are running an incompatible version of Java. JHipster
+                                    supports JDK 11 to 18.
+                                </message>
+                                <version>
+                                    [11,12),[12,13),[13,14),[14,15),[15,16),[16,17),[17,18),[18,19)
+                                </version>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
@@ -692,7 +696,8 @@
                                 <goal>copy-resources</goal>
                             </goals>
                             <configuration>
-                                <outputDirectory>${project.build.directory}/classes</outputDirectory>
+                                <outputDirectory>${project.build.directory}/classes
+                                </outputDirectory>
                                 <useDefaultDelimiters>false</useDefaultDelimiters>
                                 <delimiters>
                                     <delimiter>#</delimiter>
@@ -764,7 +769,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
-               </plugin>
+                </plugin>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
@@ -870,11 +875,15 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <condition property="skip.npm" value="true" else="false" >
+                                        <condition property="skip.npm" value="true" else="false">
                                             <and>
-                                                <available file="checksums.csv" filepath="${project.build.directory}" />
-                                                <available file="checksums.csv.old" filepath="${project.build.directory}" />
-                                                <filesmatch file1="${project.build.directory}/checksums.csv" file2="${project.build.directory}/checksums.csv.old" />
+                                                <available file="checksums.csv"
+                                                    filepath="${project.build.directory}"/>
+                                                <available file="checksums.csv.old"
+                                                    filepath="${project.build.directory}"/>
+                                                <filesmatch
+                                                    file1="${project.build.directory}/checksums.csv"
+                                                    file2="${project.build.directory}/checksums.csv.old"/>
                                             </and>
                                         </condition>
                                     </target>
@@ -914,7 +923,8 @@
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
-                                    <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+                                    <npmInheritsProxyConfigFromMaven>false
+                                    </npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
                         </executions>
